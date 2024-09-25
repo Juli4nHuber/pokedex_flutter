@@ -25,7 +25,7 @@ class SliderStadistic extends StatelessWidget {
             child: SizedBox(height: 23,
               child: SliderTheme(
                 data: SliderTheme.of(context).copyWith(disabledActiveTrackColor: color, trackHeight: 4, thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 0.0)),
-                child: Slider(value: value.toDouble(), min: 0, max: (isPV) ? value.toDouble() : 155, onChanged: null)
+                child: Slider(value: value.toDouble(), min: 0, max: (isPV) ? value.toDouble() : 255, onChanged: null)
               ),
             ),
           ),
