@@ -17,7 +17,7 @@ class PokeapiProvider extends ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> fetchPokemon() async {
-    final response = await http.get(Uri.parse("https://pokeapi.co/api/v2/pokemon/${idPokemonApi}"));
+    final response = await http.get(Uri.parse("https://pokeapi.co/api/v2/pokemon/$idPokemonApi"));
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
