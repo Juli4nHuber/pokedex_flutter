@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:pokedex_flutter/widgets/info_pokemon.dart';
+import 'package:pokedex_flutter/presentation/providers/pokemon/info_pokemon.dart';
 import 'package:pokedex_flutter/extensions/extensions.dart';
 
-import 'package:pokedex_flutter/providers/pokeapi_provider.dart';
+import 'package:pokedex_flutter/presentation/providers/provider.dart';
 
 class PokemonScreen extends StatelessWidget {
 

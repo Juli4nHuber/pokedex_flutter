@@ -31,9 +31,10 @@ class SliderStadistic extends StatelessWidget {
           ),
           SizedBox(
             width: 25,
-            child: Text(value.toString().split('.')[0], style: GoogleFonts.pressStart2p(color: Colors.white, fontSize: 8))),
+            child: Text(value.toString().split('.')[0], style: GoogleFonts.pressStart2p(color: Colors.white, fontSize: 8))
+          )
         ]
-      ),
+      )
     );
   }
 }
