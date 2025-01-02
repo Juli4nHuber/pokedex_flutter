@@ -29,8 +29,9 @@ class SliderStadistic extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          Container(
             width: 25,
+            alignment: Alignment.center,
             child: Text(value.toString().split('.')[0], style: GoogleFonts.pressStart2p(color: Colors.white, fontSize: 8))
           )
         ]
