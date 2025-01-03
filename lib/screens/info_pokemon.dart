@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex_flutter/slider_stadistic.dart';
+import 'package:pokedex_flutter/screens/slider_stadistic.dart';
 
 class SlidersStadistics extends StatelessWidget {
   const SlidersStadistics({

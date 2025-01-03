@@ -12,11 +12,10 @@ class Pokemon {
   });
 
   factory Pokemon.fromJson(Map<String, dynamic> json) {
-    final id = json['id'] as int?;
+    final id = json['id'];
     final name = json['name'] as String?;
     final image = json['image'] as String?;
-    final stadistics = (json['stadistics'] as Map<String, dynamic>?)
-        ?.map((key, value) => MapEntry(key, value as int));
+    final stadistics = (json['stadistics'] as Map<String, dynamic>?)?.map((key, value) => MapEntry(key, value as int));
 
     if (id == null || name == null || image == null || stadistics == null) {
       throw FormatException('Campos nulos detectados en los datos del JSON: $json');
