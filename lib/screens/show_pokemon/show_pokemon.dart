@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:pokedex_flutter/screens/info_pokemon.dart';
+import 'package:pokedex_flutter/screens/show_pokemon/widgets/info_pokemon.dart';
 import 'package:pokedex_flutter/extensions/extensions.dart';
 import 'package:pokedex_flutter/providers/pokemon_provider.dart';
 
@@ -43,7 +43,7 @@ class PokemonScreen extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () =>
-                        context.read<PokemonProvider>().changePreviousPokemon(),
+                        context.read<PokemonProvider>().changePokemon(pokemon: (pokemon.id! - 1).toString()),
                     style: TextButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         iconColor: Colors.white,
@@ -60,7 +60,7 @@ class PokemonScreen extends StatelessWidget {
                             height: 264,
                             width: 264,
                             placeholder: 'assets/images/spinnerPokeball.gif',
-                            image: pokemon.image,
+                            image: pokemon.sprites!.other!.home!.frontDefault!,
                             fit: BoxFit.contain),
                         Text(pokemon.name.toString().capitalize(),
                             style: GoogleFonts.pressStart2p(
@@ -70,7 +70,7 @@ class PokemonScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () =>
-                        context.read<PokemonProvider>().changeNextPokemon(),
+                        context.read<PokemonProvider>().changePokemon(pokemon: (pokemon.id! + 1).toString()),
                     style: TextButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         iconColor: Colors.white,
@@ -81,7 +81,7 @@ class PokemonScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SlidersStadistics(data: pokemon.stadistics),
+            SlidersStadistics(data: pokemon.stats!),
             Text('Nº ${pokemon.id}',
                 style:
                     GoogleFonts.pressStart2p(color: Colors.white, fontSize: 10))

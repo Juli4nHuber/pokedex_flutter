@@ -12,43 +12,14 @@ class PokemonProvider extends ChangeNotifier {
   }
 
   void cargaPredeterminada() async {
-    pokemon = await getPokemon(idPokemon: 133);
+    changePokemon(pokemon: '133');
     notifyListeners();
   }
 
-  Future<Pokemon> getPokemon({required int idPokemon}) async {
-    final response = await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/$idPokemon/'));
-    final json = await jsonDecode(response.body) as Map<String, dynamic>;
-
-    return Pokemon.fromJson({
-      'id': json['id'],
-      'name': json['name'],
-      'image': json['sprites']['other']['home']['front_default'],
-      'stadistics': {
-        'PS': json['stats'][0]['base_stat'],
-        'AF': json['stats'][1]['base_stat'],
-        'DE': json['stats'][2]['base_stat'],
-        'SA': json['stats'][3]['base_stat'],
-        'SD': json['stats'][4]['base_stat'],
-        'VEL': json['stats'][5]['base_stat']
-      }
-    });
-  }
-
-  void changePokemon({required int idPokemon}) async {
-    pokemon = await getPokemon(idPokemon: idPokemon);
-    notifyListeners();
-  }
-
-  void changePreviousPokemon() async {
-    final idPokemon = pokemon!.id - 1;
-    pokemon = await getPokemon(idPokemon: idPokemon);
-    notifyListeners();
-  }
-
-  void changeNextPokemon() async {
-    final idPokemon = pokemon!.id + 1;
-    pokemon = await getPokemon(idPokemon: idPokemon);
+  void changePokemon({required String pokemon}) async {
+    final response = await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/$pokemon/'));
+    final json = await jsonDecode(response.body);
+    this.pokemon = Pokemon.fromJson(json);
     notifyListeners();
   }
   
