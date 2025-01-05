@@ -14,12 +14,15 @@ class PokemonApi {
   static Future<List<Pokemon>> getPokemonsPage({int page = 0, int limit = 20}) async {
     final offset = page * limit;
     final response = await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon?limit=$limit&offset=$offset'));
-    final json = await jsonDecode(response.body);
-    final pokemonList = json.results.map((pokemon) async {
-      final response = await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/${pokemon['name']}/'));
-      final json = await jsonDecode(response.body);
-      return Pokemon.fromJson(json);
-    }).toList();
+    final json = jsonDecode(response.body);
+    
+    final pokemonList = await Future.wait((json['results'] as List).map((pokemon) async {
+        final response = await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/${pokemon['name']}/'));
+        final json = jsonDecode(response.body);
+        return Pokemon.fromJson(json);
+      }),
+    );
     return pokemonList;
   }
+
 }
