@@ -34,9 +34,18 @@ class _CardPokemonState extends State<CardPokemon> {
 
     if(pokemon == null) return Center(child: Image.asset('assets/images/spinnerPokeball.gif'));
     
-    return FadeInImage.assetNetwork(
-        placeholder: 'assets/images/spinnerPokeball.gif', 
-        image: pokemon!.sprites!.other!.showdown!.frontDefault!);
-  
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          image: const DecorationImage(image: AssetImage('assets/images/grassCardBackground.jpg'), fit: BoxFit.fill, opacity: 0.5),
+          border: Border.all(width: 2, color: Colors.white),
+          borderRadius: const BorderRadius.all(Radius.circular(8))
+        ),
+        child: FadeInImage.assetNetwork(
+          placeholder: 'assets/images/spinnerPokeball.gif', 
+          image: pokemon!.sprites!.other!.showdown!.frontDefault!),
+      ),
+    );
   }
 }

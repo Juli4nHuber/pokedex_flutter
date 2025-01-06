@@ -44,7 +44,8 @@ class _IndexPokemonState extends State<IndexPokemon> {
     }
 
     return GridView.count(
-        crossAxisCount: 4,
+        crossAxisCount: 3,
+        padding: const EdgeInsets.all(5),
         children: pokemons!.map((pokemon) => CardPokemon(idPokemon: pokemon.name!)).toList());
   }
 }
