@@ -11,7 +11,7 @@ class PokemonApi {
     return Pokemon.fromJson(json);
   }
 
-  static Future<List<Pokemon>> getPokemonsPage({int page = 0, int limit = 20}) async {
+  static Future<List<Pokemon>> getPokemonsPage({int page = 0, int limit = 18}) async {
     final offset = page * limit;
     final response = await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon?limit=$limit&offset=$offset'));
     final json = jsonDecode(response.body);
