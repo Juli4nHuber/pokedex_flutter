@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokedex_flutter/repository/pokemon_api.dart';
 import 'package:pokedex_flutter/models/pokemon.dart';
 import 'package:pokedex_flutter/screens/index_pokemon/widgets/card_pokemon.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 class IndexPokemon extends StatefulWidget {
   const IndexPokemon({super.key});
 
@@ -10,75 +11,72 @@ class IndexPokemon extends StatefulWidget {
 }
 
 class _IndexPokemonState extends State<IndexPokemon> {
-  List<Pokemon>? pokemons;
-  bool isLoading = false;
-  int page = 0;
-  ScrollController? _scrollController;
+  static const int _pageSize = 18;
+
+  final PagingController<int, Pokemon> _pagingController =
+      PagingController(firstPageKey: 0);
 
   @override
   void initState() {
     super.initState();
-    isLoading = false;
-    loadPage(page);
-
-    _scrollController = ScrollController(initialScrollOffset: 5.0)
-      ..addListener(_scrollListener);
-  }
-
-  void loadPage(int page) async {
-    final fetchPokemons = await PokemonApi.getPokemonsPage(page: page);
-    setState(() {
-      if (pokemons == null) {
-        pokemons = fetchPokemons;
-      } else {
-        pokemons = pokemons! + fetchPokemons;
-      }
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
     });
   }
 
-  _scrollListener() {
-    if (_scrollController!.offset >=
-            _scrollController!.position.maxScrollExtent &&
-        !_scrollController!.position.outOfRange) {
-      setState(() {
-        isLoading = true;
-        if (isLoading) {
-          page++;
-          loadPage(page);
-        }
-      });
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final newPokemons = await PokemonApi.getPokemonsPage(page: pageKey);
+      final isLastPage = newPokemons.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newPokemons);
+      } else {
+        final nextPageKey = pageKey + 1;
+        _pagingController.appendPage(newPokemons, nextPageKey);
+      }
+    } catch (error) {
+      _pagingController.error = error;
     }
   }
 
   @override
   void dispose() {
-    _scrollController!.dispose();
+    _pagingController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (pokemons == null) {
-      return Scaffold(
-          body: Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                Color(0xFF181C14),
-                Color(0xFF3C3D37),
-                Color(0xFF3C3D37)
-              ])),
-              child: Center(
-                  child: Image.asset('assets/images/spinnerPokeball.gif'))));
-    }
-
-    return GridView.count(
-        controller: _scrollController,
-        crossAxisCount: 3,
-        mainAxisSpacing: 6,
-        crossAxisSpacing: 6,
-        childAspectRatio: 0.75,
-        children: pokemons!
-            .map((pokemon) => CardPokemon(idPokemon: pokemon.name!))
-            .toList());
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF181C14),
+              Color(0xFF3C3D37),
+              Color(0xFF3C3D37),
+            ]
+          )
+        ),
+        child: PagedGridView<int, Pokemon>(
+          pagingController: _pagingController,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            mainAxisSpacing: 6,
+            crossAxisSpacing: 6,
+            childAspectRatio: 0.75
+          ),
+          builderDelegate: PagedChildBuilderDelegate<Pokemon>(
+            itemBuilder: (context, pokemon, index) => CardPokemon(
+              idPokemon: pokemon.name!
+            ),
+            firstPageProgressIndicatorBuilder: (_) => Center(
+              child: Image.asset('assets/images/spinnerPokeball.gif')
+            ),
+            newPageProgressIndicatorBuilder: (_) => CircularProgressIndicator()
+          )
+        )
+      )
+    );
   }
 }
