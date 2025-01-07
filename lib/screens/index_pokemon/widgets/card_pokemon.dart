@@ -37,7 +37,7 @@ class _CardPokemonState extends State<CardPokemon> {
   Widget build(BuildContext context){
 
     return GestureDetector(
-      onDoubleTap: (){
+      onTap: (){
         context.read<PokemonProvider>().changePokemon(pokemon: (widget.idPokemon).toString());
         Navigator.pushNamed(context, '/');
       },

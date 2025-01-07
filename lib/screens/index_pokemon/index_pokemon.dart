@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pokedex_flutter/repository/pokemon_api.dart';
 import 'package:pokedex_flutter/models/pokemon.dart';
 import 'package:pokedex_flutter/screens/index_pokemon/widgets/card_pokemon.dart';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-
 class IndexPokemon extends StatefulWidget {
   const IndexPokemon({super.key});
 
