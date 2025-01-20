@@ -44,7 +44,7 @@ class _PokemonScreenState extends State<PokemonScreen> {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 0),
                 child: Row(
                   children: [
                     ElevatedButton(
@@ -59,38 +59,13 @@ class _PokemonScreenState extends State<PokemonScreen> {
                       child: const Icon(Icons.arrow_left_rounded),
                     ),
                     Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Dismissible(
-                              key: ValueKey(pokemon.id),
-                              direction: DismissDirection.horizontal,
-                              onDismissed: (direction) {
-                                if (direction == DismissDirection.startToEnd) {
-                                  // Deslizó hacia la derecha
-                                  context.read<PokemonProvider>().changePokemon(
-                                      pokemon: (pokemon.id! - 1).toString());
-                                } else if (direction ==
-                                    DismissDirection.endToStart) {
-                                  // Deslizó hacia la izquierda
-                                  context.read<PokemonProvider>().changePokemon(
-                                      pokemon: (pokemon.id! + 1).toString());
-                                }
-                              },
-                              child: FadeInImage.assetNetwork(
-                                  key: ValueKey(pokemon.id),
-                                  height: 264,
-                                  width: 264,
-                                  placeholder:
-                                      'assets/images/spinnerPokeball.gif',
-                                  image: pokemon
-                                      .sprites!.other!.home!.frontDefault!,
-                                  fit: BoxFit.contain)),
-                          Text(pokemon.name.toString().capitalize(),
-                              style: GoogleFonts.pressStart2p(
-                                  color: Colors.white, fontSize: 16))
-                        ],
-                      ),
+                      child: FadeInImage.assetNetwork(
+                          key: ValueKey(pokemon.id),
+                          height: 264,
+                          width: 264,
+                          placeholder: 'assets/images/spinnerPokeball.gif',
+                          image: pokemon.sprites!.other!.home!.frontDefault!,
+                          fit: BoxFit.contain),
                     ),
                     ElevatedButton(
                       onPressed: () => context
@@ -107,20 +82,27 @@ class _PokemonScreenState extends State<PokemonScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: (pokemon.types!.length == 1)
-                    ? Image.asset(
-                        'assets/images/tipos/tipo_${pokemon.types![0].type!.name}.png')
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                            Image.asset(
-                                'assets/images/tipos/tipo_${pokemon.types![0].type!.name}.png'),
-                            const SizedBox(width: 10),
-                            Image.asset(
-                                'assets/images/tipos/tipo_${pokemon.types![1].type!.name}.png')
-                          ]),
-              ),
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Column(
+                    children: [
+                      Text(pokemon.name.toString().capitalize(),
+                          style: GoogleFonts.pressStart2p(
+                              color: Colors.white, fontSize: 16)),
+                      const SizedBox(height: 5),
+                      (pokemon.types!.length == 1)
+                          ? Image.asset(
+                              'assets/images/tipos/tipo_${pokemon.types![0].type!.name}.png')
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                  Image.asset(
+                                      'assets/images/tipos/tipo_${pokemon.types![0].type!.name}.png'),
+                                  const SizedBox(width: 10),
+                                  Image.asset(
+                                      'assets/images/tipos/tipo_${pokemon.types![1].type!.name}.png')
+                                ]),
+                    ],
+                  )),
               SlidersStadistics(data: pokemon.stats!),
               Text('Nº ${pokemon.id}',
                   style: GoogleFonts.pressStart2p(

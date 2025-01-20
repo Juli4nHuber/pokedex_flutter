@@ -72,8 +72,7 @@ class _IndexPokemonState extends State<IndexPokemon> {
             ),
             firstPageProgressIndicatorBuilder: (_) => Center(
               child: Image.asset('assets/images/spinnerPokeball.gif')
-            ),
-            newPageProgressIndicatorBuilder: (_) => CircularProgressIndicator()
+            )  
           )
         )
       )
